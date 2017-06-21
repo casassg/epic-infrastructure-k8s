@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: topic-create-tweet
+  namespace: kafka
+spec:
+  template:
+    metadata:
+      name: topic-create
+      labels:
+        topic: tweet
+    spec:
+      containers:
+      - name: kafka
+        image: solsson/kafka:0.10.0.1
+        command:
+        - ./bin/kafka-topics.sh
+        - --zookeeper
+        - zookeeper:2181
+        - --create
+        - --if-not-exists
+        - --topic
+        - events
+        - --partitions
+        - "1"
+        - --replication-factor
+        - "1"
+      restartPolicy: Never

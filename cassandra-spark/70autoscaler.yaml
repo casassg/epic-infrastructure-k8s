@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: extra-spark-worker
+  namespace: cassandra
+spec:
+  maxReplicas: 3
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: v1
+    kind: ReplicationController
+    name: extra-spark-worker
+  targetCPUUtilizationPercentage: 80

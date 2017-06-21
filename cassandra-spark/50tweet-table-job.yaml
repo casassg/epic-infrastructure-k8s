@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tweet-table-job
+  namespace: cassandra
+spec:
+  template:
+    metadata:
+      name: tweet-table-job
+    spec:
+      containers:
+      - name: cqlsh
+        image: projectepic/cqlsh
+        command:
+        - echo 
+        - "CREATE KEYSPACE twitter_analytics IF NOT EXISTS WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': '1' }; exit;"
+        - \|
+        - cqlsh 
+        - cassandra-0.cassandra
+      restartPolicy: Never

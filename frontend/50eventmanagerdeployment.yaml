@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: eventmanager-ui
+  namespace: frontend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eventmanager-ui
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: eventmanager
+        image: projectepic/eventmanager-ui:1.1.8
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 100m
+            memory: 50Mi
+          requests:
+            cpu: 100m
+            memory: 50Mi
+        env:
+            - name: KAFKA_SERVERS
+              value: kafka-0.broker.kafka.svc.cluster.local:9092,kafka-1.broker.kafka.svc.cluster.local:9092
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+        volumeMounts:
+        - name: datadir
+          mountPath: /code/db
+      volumes:
+      #- name: conf
+      #  emptyDir: {}
+      - name: datadir
+        persistentVolumeClaim:
+          claimName: eventmanager-db
+
+

@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: epic
+  namespace: frontend
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: epic-ingress-ip
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: eventmanager
+          servicePort: 80
+      - path: /zeppelin/*
+        backend:
+          serviceName: zeppelin
+          servicePort: 80

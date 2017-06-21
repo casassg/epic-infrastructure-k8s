@@ -1,0 +1,49 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  name: spark-master-controller
+  namespace: cassandra
+spec:
+  replicas: 1
+  selector:
+    component: spark-master
+  template:
+    metadata:
+      labels:
+        component: spark-master
+    spec:
+      containers:
+        - name: spark-master
+          image: gcr.io/google_containers/spark:1.5.2_v1
+          command: ["/start-master"]
+          ports:
+            - containerPort: 7077
+            - containerPort: 8080
+            - containerPort: 8888
+            - containerPort: 8081
+          resources:
+            requests:
+              cpu: 100m
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: spark-master
+  namespace: cassandra
+spec:
+  ports:
+    - port: 7077
+      targetPort: 7077
+      name: spark
+    - port: 8080
+      targetPort: 8080
+      name: http
+    - port: 8888
+      targetPort: 8888
+      name: spark-1
+    - port: 8081
+      targetPort: 8081
+      name: spark-2
+
+  selector:
+    component: spark-master
