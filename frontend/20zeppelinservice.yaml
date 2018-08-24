@@ -11,4 +11,5 @@ spec:
     name: http
   selector:
     component: zeppelin
-  type: NodePort
+    # type: NodePort
+  type: LoadBalancer

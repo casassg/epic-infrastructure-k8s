@@ -26,13 +26,6 @@ spec:
             httpGet:
               path: /zeppelin/
               port: 8080
-          resources:
-            requests:
-              cpu: 100m
-              memory: 1Gi
-            limits:
-              cpu: 100m
-              memory: 1Gi
           volumeMounts:
             - name: datadir
               mountPath: /opt/zeppelin/notebook/
